@@ -183,3 +183,5 @@
       php artisan migrate:fresh --seed
       
  
+ 
+ [RELACIONAMENTOS](https://github.com/amandamcmolina/laravel/blob/master/relacionamentos.md)
