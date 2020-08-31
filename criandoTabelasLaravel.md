@@ -92,7 +92,15 @@
   já existem dados iguais na tabela, principalmente na user)
     
         php artisan migrate:fresh
-        php artisan db:seed`     
+        php artisan db:seed
+  ou
+  
+        php artisan migrate:fresh --seed
+        
+  **Obs. 2**
+  Adicionar seed específico:
+  
+      php artisan db:seed --class=AddProjetos
 
  
 ## Criar tabela (Relação: N/N) - PIVOT 
