@@ -1,10 +1,18 @@
 # criandoTabelasLaravel
 
-### Criar Banco de dados: toroCultural
+### Criar Banco de dados: nomeDoBancoDeDados
+- alterar nome do banco de dados no arquivo `.env`
+      
+      DB_DATABASE=nomeDoBancoDeDados
+      
 - importar para o seu banco de dados local as tabelas e os seeds já criados anteriormente
 
       php artisan migrate:fresh
       php artisan db:seed
+      
+      ou
+      
+      php artisan migrate:fresh --seed
 
 ### Criar tabela (Relação: 1:1  ou 1:N)
 ##### Exemplo: tabela PROJETOS
@@ -40,9 +48,9 @@
       use App\Projeto
       
 - E no caso da tabela `projetos` -> também adione ao cabeçalho  `use Carbon\Carbon`   
-  Essa tabela pede uma entrada de data_realização, por isso tempos que usar esse caminho do carbon para enviar o formato da data corretamente
+  Essa tabela pede uma entrada de data_realização, por isso utilizamos o caminho do carbon para enviar o formato da data corretamente
   
-- Adicionar para cada projeto a seguinte estrutura (Olhar nosso arquivo de Projetos no laravel)
+- Adicionar para cada projeto a seguinte estrutura (olhar nosso arquivo de Projetos no laravel). 
   Não é necessário adicionar o id ou a data de criação.
   **As colunas precisam estar na ordem de criação!**
   
@@ -102,13 +110,15 @@
   
       php artisan db:seed --class=AddProjetos
 
- 
+
 ## Criar tabela (Relação: N/N) - PIVOT 
    EX: tabelas: Projetos e categorias -> `Um projeto pode ter várias categorias e uma categoria pode estar em vários projetos`
    
 - Criar tabela pivot projeto_categoria (Nomes no singular) -> Como é tabela Pivot, **não** criar MODEL para ela
 
-        php artisan make:migration CriaTabelaPivotUserHabilidade --create=user_habilidade
+**Não criamos o model nesse caso, mas se necessário, pode ser criado sim**
+
+        php artisan make:migration CriaTabelaPivotUserHabilidade --create=projeto_categoria
 
 - Entrar na pasta database -> migrations -> migration criada
 - Apagar Coluna `$table->id();`    //Tabela Pivot(Intermediária) **não** tem id próprio
@@ -127,5 +137,49 @@
 
       php artisan migrate:fresh
  
- ### Criar seed para tabelas (N:N) 
- - AINDA EM ESTUDO!!!
+### Criar seed para tabelas (N:N) 
+- Exemplo: tabela Pivot projeto_categoria
+- Criar seed para tabela pivot 
+
+      php artisan make:seed AddProjetosCategorias
+      
+- Como não criamos um model para a tabela, utilizaremos o SQL para alimentar a tabela do banco de dados
+- Adicionar caminho para utilização do banco de dados
+
+      use Illuminate\Support\Facades\DB;
+      
+- alimentantar o seed - dentro da funcção `run()`
+- Então, o banco procurará o nome da tabela `projeto_caregoria` e inserirá os dados
+      
+      $now = date('Y-m-d H:i:s');
+        DB::table('projeto_categoria')->insert([
+            [
+                  "projeto_id" => 1,
+                  "categoria_id" => 1,
+                  "created_at" => $now,
+                  "updated_at"=> $now
+            ], 
+            [
+                  "projeto_id" => 1,
+                  "categoria_id" => 2,
+                  "created_at" => $now,
+                  "updated_at"=> $now
+            ],
+            [
+                  "projeto_id" => 2,
+                  "categoria_id" => 3,
+                  "created_at" => $now,
+                  "updated_at"=> $now
+            ],
+      ]);
+ 
+- Entrar no:  database -> seeds -> DataBaseSeeder.php
+- Adicionar seed à lista de criação
+
+      $this->call(AddProjetosCategorias::class);
+      
+- Enviar ao bando de dados
+      
+      php artisan migrate:fresh --seed
+      
+ 
