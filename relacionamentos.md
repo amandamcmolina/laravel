@@ -7,12 +7,16 @@
 
 - Entrar no model Projeto em app/Projeto.php
 - Adicionar relaçionamento em nova função com **nome_da_tabela** a ser associada (no caso, categorias)
+- De preferência, as tabelas pivot devem conter os nomes das duas tabelas que serão associadas em ordem alfabética.
+      No nosso caso, não fizemos isso: `projeto_categoria`, então, precisaremos passar o nome da tabela como parâmetro 
+      do `belongsToMany('App\Categoria', 'projeto_categoria')`. E caso, o nome da tabela foreignId não seja o convecional, 
+      adicionar também à estrutura `belongsToMany('App\Categoria', 'projeto_categoria', 'id referente ao model atual', 'id referente ao model de relacionamento');`.
 
 utilizar `belongsToMany(App\Model)`
 
       public function categorias()
       {
-        return $this->belongsToMany('App\Categoria');
+        return $this->belongsToMany('App\Categoria', 'projeto_categoria', 'categoria_id', 'projeto_id');
       }
       
 - Entrar no model Categoria em app/Categoria.php
@@ -20,7 +24,7 @@ utilizar `belongsToMany(App\Model)`
 
       public function projetos()
       {
-        return $this->belongsToMany('App\Projeto');
+        return $this->belongsToMany('App\Projeto', 'projeto_categoria', 'projeto_id', 'categoria_id');
       }
       
 ### Relacionamento (1:N)
@@ -40,9 +44,12 @@ usar `hasMany('App\Model')`
 
 usar `belongsTo('App\Model')`
 
-      public function users()
+Agora é necessário fazer um teste: pegar o nome do método `user` e adionar `_id` = `user_id`. Se `user_id`não for o nome da foreignId dada na tabela Pivot, 
+devemos adicionar o nome da foreingId personalizada ao `belongsTo('App\User', 'personalizado_id')`.
+
+      public function user()
       {
-        return $this->belongsTo('App\User');
+        return $this->belongsTo('App\User', 'user_id');
       }
 
   
