@@ -36,7 +36,7 @@ A tabela intermediária `projeto_categoria` foi criada com duas foreignId. Cada 
 
       public function categorias()
       {
-        return $this->belongsToMany('App\Categoria', 'projeto_categoria', 'categoria_id', 'projeto_id');
+        return $this->belongsToMany('App\Categoria', 'projeto_categoria', 'projeto_id', 'categoria_id');
       }
       
 - Ao finalizar, entrar no model Categoria em app/Categoria.php e seguir o mesmo passo a passo.
@@ -44,7 +44,7 @@ A tabela intermediária `projeto_categoria` foi criada com duas foreignId. Cada 
 
       public function projetos()
       {
-        return $this->belongsToMany('App\Projeto', 'projeto_categoria', 'projeto_id', 'categoria_id');
+        return $this->belongsToMany('App\Projeto', 'projeto_categoria', 'categoria_id', 'projeto_id');
       }
       
 ### Relacionamento (1:N)
