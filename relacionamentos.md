@@ -6,13 +6,33 @@
 ##### Exemplo: tabela `projeto_categoria`
 
 - Entrar no model Projeto em app/Projeto.php
-- Adicionar relaçionamento em nova função com **nome_da_tabela** a ser associada (no caso, categorias)
-- De preferência, as tabelas pivot devem conter os nomes das duas tabelas que serão associadas em ordem alfabética.
-      No nosso caso, não fizemos isso: `projeto_categoria`, então, precisaremos passar o nome da tabela como parâmetro 
-      do `belongsToMany('App\Categoria', 'projeto_categoria')`. E caso, o nome da tabela foreignId não seja o convecional, 
-      adicionar também à estrutura `belongsToMany('App\Categoria', 'projeto_categoria', 'id referente ao model atual', 'id referente ao model de relacionamento');`.
+- Adicionar relacionamento em nova função(método) com referencia a tabela que será associada (no caso, categorias). Adicionamos o `belongsToMany()` e o seu primeiro parâmetro é o caminho até a model da tabela a ser associada (Categoria).
+      
+      public function categorias()
+      {
+            return this->belongsToMany('App\Categoria');
+      }
+      
+   O laravel tem a habilidade de olhar o nome da função criada e saber com qual tabela ela vai se relacionar. Então, ele vai procurar por `categoria_projeto`. Assim, em ordem alfabética. Aqui encontramos um erro. De preferência, as tabelas pivot devem conter os nomes das duas tabelas que serão associadas em ordem alfabética.
+   No nosso caso, não fizemos nessa ordem -  `projeto_categoria` -  então, precisaremos passar o nome da tabela como segundo parâmetro 
+   do: 
+   
+      belongsToMany('App\Categoria', 'projeto_categoria');
+ **Atenção: ** procurar nome da tabela dentro do arquivo da migration. Não no nome do arquivo!
+ 
+ Além disso, nós não somos obrigados a colocar o nome da função exatamente como está no nome da tabela, tanto é que      ele aceitaria a função como `function categorias_principais(){ ...}`, desde que específiquemos no `belongsToMany()` o nome da tabela original. 
+- Adicionar também à estrutura `belongsToMany()` os id's(nomes das colunas) da tabela intermediária. 
 
-utilizar `belongsToMany(App\Model)`
+      belongsToMany('App\Categoria', 'projeto_categoria', 'id referente ao model atual', 'id referente ao model de relacionamento');
+
+No nosso exemplo (retirado da migration projeto_categoria):
+      
+      Schema::create('projeto_categoria', function (Blueprint $table) {
+            $table->foreignId('projeto_id')->constrained();
+            $table->foreignId('categoria_id')->constrained();
+            $table->timestamps();
+        });
+A tabela intermediária `projeto_categoria` foi criada com duas foreignId. Cada uma tem um nome de coluna para os id's.
 
       public function categorias()
       {
