@@ -88,7 +88,7 @@ podemos ir até a tabela `projetos` e filtrar pelo `user_id`.
         });
 
 
-Agora é necessário fazer um teste com a função que recebe o belongsTo() e que está no singular: pegar o nome do método `user()` e adicionar `_id` = `user_id`. Se `user_id`não for o nome da coluna foreignId dada na tabela `peojetos`, devemos adicionar o nome da coluna do foreingId personalizada ao `belongsTo('App\User', 'personalizado_id')`.
+Agora é necessário fazer um teste com a função que recebe o belongsTo() e que está no singular: pegar o nome do método `user()` e adicionar `_id` = `user_id`. Se `user_id`não for o nome da coluna foreignId dada na tabela `projetos`, devemos adicionar o nome da coluna do foreingId personalizada ao `belongsTo('App\User', 'personalizado_id')`.
 
       public function user()
       {
