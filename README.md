@@ -1,5 +1,5 @@
 # laravel
-- Passo a passo para migração para o laravel
+- Passo a passo: migração para o laravel
 
 1. [Download Biblioteca](https://github.com/amandamcmolina/laravel/blob/master/downloadLaravel.md)
 
