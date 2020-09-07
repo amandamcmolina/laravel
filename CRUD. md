@@ -1,6 +1,0 @@
-# CRUD
-
-### Criar
-
-- Cadastro de projetos ou usuários com formulário
-  Criar formulário com `method="POST"` e `action = "\user\projetos"`. Ele criará uma rota com método para obtenção de dados dos inputs e enviou ao BD.
