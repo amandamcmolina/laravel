@@ -56,7 +56,7 @@
 
       
       
-## EDITAR
+### EDITAR
 
 - Copiar o arquivo `create` como `edit.blade.php`. A estrutura do formulário será igual, tirando o método.
 - Como podemos observar, o formulário ainda recebe o method `post`, porque alguns navegadores não identificam o method `put` ainda.
@@ -99,8 +99,9 @@ projeto em questão para a rota que será criada a seguir:
 
       Route::put('/projeto/edit/{id}', 'PerfilProjeto@update');
 - Criar método `update` no controller do Perfil do projeto
+
       public function update($id)
-    {
+      {
         
         $projeto = Projeto::find($id);         //Encontrar o projeto
 
@@ -110,6 +111,26 @@ projeto em questão para a rota que será criada a seguir:
 
         $produto->save();                       //salvar novamente
         return redirect('/projeto/'.$projeto->id);
-    }
+      }
 
+### Deletar
 
+- Criar botão `delete` no perfil do projeto com o esquema de manter o `method= "POST"` e adicionar o `@method('delete')`
+
+      <form action="/projeto/delete/{{$projeto->id}}" method="POST">
+            @method('delete')
+            @csrf
+            <button type="submit" class="btn badge badge-danger">Deletar</button>
+      </form>
+
+- Criar rota do delete
+
+      Route::delete('/projeto/delete/{id}', 'PerfilProjetoController@delete');
+      
+- Criar método `delete` no controller
+
+       public function delete($id)
+       {
+        Projeto::where('id', $id)->delete();
+        return redirect('/home');
+       }
