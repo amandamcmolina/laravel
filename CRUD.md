@@ -134,3 +134,10 @@ projeto em questão para a rota que será criada a seguir:
         Projeto::where('id', $id)->delete();
         return redirect('/home');
        }
+       
+       
+- Caso dê um erro ao deletar: 
+
+`Integrity constraint violation: 1451 Cannot delete or update a parent row: a foreign key constraint fails` - Quando apaga o elemento pai projeto_id não apagará o elemento relacionado
+
+        $table->foreignId('projeto_id')->constrained('projetos')->onDelete('cascade');
